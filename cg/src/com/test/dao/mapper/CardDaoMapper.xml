@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8" ?>  
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd"> 
+<mapper namespace="com.test.dao.CardDao">
+    <resultMap type="com.test.model.Card" id="cardMap">
+		<result property="cardId" column="card_id"/>
+		<result property="cardTypeId" column="card_type_id"/>
+		<result property="cardName" column="card_name"/>
+		<result property="refreshTime" column="refresh_time"/>
+		<result property="grid" column="grid"/>
+		<result property="positionX" column="position_x"/>
+		<result property="positionY" column="position_y"/>
+		<result property="positionZ" column="position_z"/>
+		<result property="extraAttributes" column="extra_attributes"/>
+		<result property="isLock" column="is_lock"/>
+		<result property="createTime" column="create_time"/>
+		<result property="createBy" column="create_by"/>
+		<result property="updateTime" column="update_time"/>
+		<result property="updateBy" column="update_by"/>
+
+    </resultMap>
+    
+    <select id="getCardList" resultMap="cardMap">
+    	select * from card
+    </select>
+    <select id="getCardByPrimaryKey" parameterType="Integer" resultMap="cardMap">
+    	select * from card where card_id =#{cardId}
+    </select>
+    
+    <insert id="createCard" parameterType="com.test.model.Card">
+        <selectKey resultType="Integer"  order="AFTER" keyProperty="cardId" >
+        	SELECT LAST_INSERT_ID()
+        </selectKey>
+		INSERT INTO card(
+			card_id,
+			card_type_id,
+			card_name,
+			refresh_time,
+			grid,
+			position_x,
+			position_y,
+			position_z,
+			extra_attributes,
+			is_lock,
+			create_time,
+			create_by,
+			update_time,
+			update_by
+		)VALUES(
+			#{cardId},
+			#{cardTypeId},
+			#{cardName},
+			#{refreshTime},
+			#{grid},
+			#{positionX},
+			#{positionY},
+			#{positionZ},
+			#{extraAttributes},
+			#{isLock},
+			#{createTime},
+			#{createBy},
+			#{updateTime},
+			#{updateBy}
+		)
+    </insert>
+    
+    <update id="updateCard" parameterType="com.test.model.Card">
+		UPDATE card set
+			card_type_id = #{cardTypeId},
+			card_name = #{cardName},
+			refresh_time = #{refreshTime},
+			grid = #{grid},
+			position_x = #{positionX},
+			position_y = #{positionY},
+			position_z = #{positionZ},
+			extra_attributes = #{extraAttributes},
+			is_lock = #{isLock},
+			update_time = #{updateTime},
+			update_by = #{updateBy}
+		WHERE card_id = #{cardId}
+
+    </update>
+    
+    <delete id="deleteCard" parameterType="Integer">
+    	delete from  card where card_id =#{cardId}
+    </delete>
+</mapper>

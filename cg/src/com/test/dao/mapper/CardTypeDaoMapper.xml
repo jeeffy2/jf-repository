@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8" ?>  
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd"> 
+<mapper namespace="com.test.dao.CardTypeDao">
+    <resultMap type="com.test.model.CardType" id="cardTypeMap">
+		<result property="cardTypeId" column="card_type_id"/>
+		<result property="cardTypeName" column="card_type_name"/>
+		<result property="logoName" column="logo_name"/>
+		<result property="description" column="description"/>
+		<result property="grids" column="grids"/>
+		<result property="category" column="category"/>
+		<result property="createTime" column="create_time"/>
+		<result property="createBy" column="create_by"/>
+		<result property="updateTime" column="update_time"/>
+		<result property="updateBy" column="update_by"/>
+
+    </resultMap>
+    
+    <select id="getCardTypeList" resultMap="cardTypeMap">
+    	select * from card_type
+    </select>
+    <select id="getCardTypeByPrimaryKey" parameterType="Integer" resultMap="cardTypeMap">
+    	select * from card_type where card_type_id =#{cardTypeId}
+    </select>
+    
+    <insert id="createCardType" parameterType="com.test.model.CardType">
+        <selectKey resultType="Integer"  order="AFTER" keyProperty="cardTypeId" >
+        	SELECT LAST_INSERT_ID()
+        </selectKey>
+		INSERT INTO card_type(
+			card_type_id,
+			card_type_name,
+			logo_name,
+			description,
+			grids,
+			category,
+			create_time,
+			create_by,
+			update_time,
+			update_by
+		)VALUES(
+			#{cardTypeId},
+			#{cardTypeName},
+			#{logoName},
+			#{description},
+			#{grids},
+			#{category},
+			#{createTime},
+			#{createBy},
+			#{updateTime},
+			#{updateBy}
+		)
+    </insert>
+    
+    <update id="updateCardType" parameterType="com.test.model.CardType">
+		UPDATE card_type set
+			card_type_name = #{cardTypeName},
+			logo_name = #{logoName},
+			description = #{description},
+			grids = #{grids},
+			category = #{category},
+			update_time = #{updateTime},
+			update_by = #{updateBy}
+		WHERE card_type_id = #{cardTypeId}
+
+    </update>
+    
+    <delete id="deleteCardType" parameterType="Integer">
+    	delete from  card_type where card_type_id =#{cardTypeId}
+    </delete>
+</mapper>

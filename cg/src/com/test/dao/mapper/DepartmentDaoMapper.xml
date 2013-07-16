@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8" ?>  
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd"> 
+<mapper namespace="com.test.dao.DepartmentDao">
+    <resultMap type="com.test.model.Department" id="departmentMap">
+		<result property="departmentId" column="department_id"/>
+		<result property="departmentName" column="department_name"/>
+		<result property="departmentCode" column="department_code"/>
+		<result property="superDepartment" column="super_department"/>
+		<result property="createTime" column="create_time"/>
+		<result property="createBy" column="create_by"/>
+		<result property="updateTime" column="update_time"/>
+		<result property="updateBy" column="update_by"/>
+
+    </resultMap>
+    
+    <select id="getDepartmentList" resultMap="departmentMap">
+    	select * from department
+    </select>
+    <select id="getDepartmentByPrimaryKey" parameterType="Integer" resultMap="departmentMap">
+    	select * from department where department_id =#{departmentId}
+    </select>
+    
+    <insert id="createDepartment" parameterType="com.test.model.Department">
+        <selectKey resultType="Integer"  order="AFTER" keyProperty="departmentId" >
+        	SELECT LAST_INSERT_ID()
+        </selectKey>
+		INSERT INTO department(
+			department_id,
+			department_name,
+			department_code,
+			super_department,
+			create_time,
+			create_by,
+			update_time,
+			update_by
+		)VALUES(
+			#{departmentId},
+			#{departmentName},
+			#{departmentCode},
+			#{superDepartment},
+			#{createTime},
+			#{createBy},
+			#{updateTime},
+			#{updateBy}
+		)
+    </insert>
+    
+    <update id="updateDepartment" parameterType="com.test.model.Department">
+		UPDATE department set
+			department_name = #{departmentName},
+			department_code = #{departmentCode},
+			super_department = #{superDepartment},
+			update_time = #{updateTime},
+			update_by = #{updateBy}
+		WHERE department_id = #{departmentId}
+
+    </update>
+    
+    <delete id="deleteDepartment" parameterType="Integer">
+    	delete from  department where department_id =#{departmentId}
+    </delete>
+</mapper>

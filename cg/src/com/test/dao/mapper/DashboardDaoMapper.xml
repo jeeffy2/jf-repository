@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8" ?>  
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd"> 
+<mapper namespace="com.test.dao.DashboardDao">
+    <resultMap type="com.test.model.Dashboard" id="dashboardMap">
+		<result property="dashboardId" column="dashboard_id"/>
+		<result property="userId" column="user_id"/>
+		<result property="dashboardName" column="dashboard_name"/>
+		<result property="layout" column="layout"/>
+		<result property="isDefault" column="is_default"/>
+		<result property="isShared" column="is_shared"/>
+		<result property="source" column="source"/>
+		<result property="createTime" column="create_time"/>
+		<result property="createBy" column="create_by"/>
+		<result property="updateTime" column="update_time"/>
+		<result property="updateBy" column="update_by"/>
+
+    </resultMap>
+    
+    <select id="getDashboardList" resultMap="dashboardMap">
+    	select * from dashboard
+    </select>
+    <select id="getDashboardByPrimaryKey" parameterType="Integer" resultMap="dashboardMap">
+    	select * from dashboard where dashboard_id =#{dashboardId}
+    </select>
+    
+    <insert id="createDashboard" parameterType="com.test.model.Dashboard">
+        <selectKey resultType="Integer"  order="AFTER" keyProperty="dashboardId" >
+        	SELECT LAST_INSERT_ID()
+        </selectKey>
+		INSERT INTO dashboard(
+			dashboard_id,
+			user_id,
+			dashboard_name,
+			layout,
+			is_default,
+			is_shared,
+			source,
+			create_time,
+			create_by,
+			update_time,
+			update_by
+		)VALUES(
+			#{dashboardId},
+			#{userId},
+			#{dashboardName},
+			#{layout},
+			#{isDefault},
+			#{isShared},
+			#{source},
+			#{createTime},
+			#{createBy},
+			#{updateTime},
+			#{updateBy}
+		)
+    </insert>
+    
+    <update id="updateDashboard" parameterType="com.test.model.Dashboard">
+		UPDATE dashboard set
+			user_id = #{userId},
+			dashboard_name = #{dashboardName},
+			layout = #{layout},
+			is_default = #{isDefault},
+			is_shared = #{isShared},
+			source = #{source},
+			update_time = #{updateTime},
+			update_by = #{updateBy}
+		WHERE dashboard_id = #{dashboardId}
+
+    </update>
+    
+    <delete id="deleteDashboard" parameterType="Integer">
+    	delete from  dashboard where dashboard_id =#{dashboardId}
+    </delete>
+</mapper>

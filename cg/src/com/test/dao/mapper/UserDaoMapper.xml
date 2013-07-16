@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8" ?>  
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd"> 
+<mapper namespace="com.test.dao.UserDao">
+    <resultMap type="com.test.model.User" id="userMap">
+		<result property="userId" column="user_id"/>
+		<result property="departmentId" column="department_id"/>
+		<result property="userName" column="user_name"/>
+		<result property="password" column="password"/>
+		<result property="email" column="email"/>
+		<result property="phone" column="phone"/>
+		<result property="mobile" column="mobile"/>
+		<result property="createTime" column="create_time"/>
+		<result property="createBy" column="create_by"/>
+		<result property="updateTime" column="update_time"/>
+		<result property="updateBy" column="update_by"/>
+
+    </resultMap>
+    
+    <select id="getUserList" resultMap="userMap">
+    	select * from user
+    </select>
+    <select id="getUserByPrimaryKey" parameterType="Integer" resultMap="userMap">
+    	select * from user where user_id =#{userId}
+    </select>
+    
+    <insert id="createUser" parameterType="com.test.model.User">
+        <selectKey resultType="Integer"  order="AFTER" keyProperty="userId" >
+        	SELECT LAST_INSERT_ID()
+        </selectKey>
+		INSERT INTO user(
+			user_id,
+			department_id,
+			user_name,
+			password,
+			email,
+			phone,
+			mobile,
+			create_time,
+			create_by,
+			update_time,
+			update_by
+		)VALUES(
+			#{userId},
+			#{departmentId},
+			#{userName},
+			#{password},
+			#{email},
+			#{phone},
+			#{mobile},
+			#{createTime},
+			#{createBy},
+			#{updateTime},
+			#{updateBy}
+		)
+    </insert>
+    
+    <update id="updateUser" parameterType="com.test.model.User">
+		UPDATE user set
+			department_id = #{departmentId},
+			user_name = #{userName},
+			password = #{password},
+			email = #{email},
+			phone = #{phone},
+			mobile = #{mobile},
+			update_time = #{updateTime},
+			update_by = #{updateBy}
+		WHERE user_id = #{userId}
+
+    </update>
+    
+    <delete id="deleteUser" parameterType="Integer">
+    	delete from  user where user_id =#{userId}
+    </delete>
+</mapper>
